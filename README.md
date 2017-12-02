@@ -76,7 +76,7 @@ GET /echodelaysvc/delay/ne?min=50ms&mean=200ms&max=2s
 }
 ```
 
-###Set Time Distribution to Gaussian
+### Set Time Distribution to Gaussian
 
 **Request**: GET `echodelaysvc/delay/gaussian?min={mintime}&mean={meantime}&max={maxtime}&sigma={sigmatime}`
 
@@ -111,7 +111,7 @@ GET /echodelaysvc/delay/gaussian?min=50ms&mean=1s&max=2s&sigma=330ms
 }
 ```
 
-###Set Time Distribution to Uniform
+### Set Time Distribution to Uniform
 
 **Request**: GET `/echodelaysvc/delay/uniform?min={mintime}&max={maxtime}`
 

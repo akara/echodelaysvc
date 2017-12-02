@@ -30,6 +30,8 @@ libraryDependencies ++= Seq(
 
 mainClass in (Compile, run) := Some("org.squbs.unicomplex.Bootstrap")
 
+fork in Test := true
+
 // enable scalastyle on compile
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 

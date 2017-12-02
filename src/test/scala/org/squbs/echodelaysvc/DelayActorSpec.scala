@@ -97,7 +97,7 @@ class DelayActorSpec(system: ActorSystem) extends TestKit(system) with ImplicitS
       val entityString = Await.result(response.entity.toStrict(1 second).map(_.data.utf8String), 1 second)
       val result = mapper.readValue(entityString, classOf[Map[String, Any]])
       val compensate = result("total-compensate")
-      compensate shouldBe a [String]
+      compensate shouldBe a[String]
       compensate.asInstanceOf[String] should endWith (" ms")
     }
   }

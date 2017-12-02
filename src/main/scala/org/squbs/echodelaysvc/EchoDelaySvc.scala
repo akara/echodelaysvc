@@ -1,6 +1,5 @@
 package org.squbs.echodelaysvc
 
-import akka.actor.Props
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -11,23 +10,17 @@ import scala.language.postfixOps
 import scala.util.Random
 
 class EchoDelaySvc extends RouteDefinition {
-  val delayActor = context.actorOf(Props[DelayActor])
+
+  import org.squbs.util.ConfigUtil._
+  implicit val askTimeout: Timeout =
+    Timeout(context.system.settings.config.get[FiniteDuration]("akka.http.server.request-timeout"))
+
+  val delayActor = Lookup("/user/echodelaysvc/delayactor")
   delayActor ! UpdateDelayRequest(() => random.nextNegativeExponential(50 millis, 1 second, 20 seconds))
 
   val random = new Random(System.nanoTime)
 
-  import org.squbs.util.ConfigUtil._
-  implicit val askTimeout =
-    Timeout(context.system.settings.config.get[FiniteDuration]("akka.http.server.request-timeout"))
-
   def route =
-    path("echo"/ Segment) { path =>
-      get {
-        onSuccess(delayActor ? ScheduleRequest(System.nanoTime(), path)) {
-          case response: HttpResponse => complete(response)
-        }
-      }
-    } ~
       path("delay" / "ne") {
         get {
           parameters(
